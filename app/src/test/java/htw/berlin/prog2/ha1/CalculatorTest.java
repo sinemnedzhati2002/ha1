@@ -106,8 +106,6 @@ public class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-    public void main() {
-        testPositiveSubraction();
-    }
+    
 }
 
