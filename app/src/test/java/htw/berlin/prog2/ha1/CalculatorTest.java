@@ -106,6 +106,6 @@ public class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-    
+
 }
 
