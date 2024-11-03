@@ -113,7 +113,7 @@ public class CalculatorTest {
         calc.pressDigitKey(5);
         calc.pressBinaryOperationKey("*");
         calc.pressDigitKey(0);
-        calc.pressEqualsKey();
+        calc.pressDotKey();
 
         String expected = "0";
         String actual = calc.readScreen();
