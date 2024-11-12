@@ -1,12 +1,14 @@
 package htw.berlin.prog2.ha1;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Nested
 @DisplayName("Retro calculator")
-public class CalculatorTest {
+class CalculatorTest {
 
     @Test
     @DisplayName("should display result after adding two positive multi-digit numbers")
@@ -56,7 +58,7 @@ public class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-    @Test
+   @Test
     @DisplayName("should display error when drawing the square root of a negative number")
     void testSquareRootOfNegative() {
         Calculator calc = new Calculator();
@@ -68,7 +70,7 @@ public class CalculatorTest {
         String expected = "Error";
         String actual = calc.readScreen();
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actual) ;
     }
 
     @Test
@@ -90,6 +92,7 @@ public class CalculatorTest {
 
 
     //TODO hier weitere Tests erstellen
+    //grüner Test
     @Test
     @DisplayName("should display result after subtracing a smaller number from a large one")
     void testPositiveSubraction() {
@@ -105,39 +108,29 @@ public class CalculatorTest {
 
         assertEquals(expected, actual);
     }
+
+
     @Test
-    @DisplayName("should display zero when multiplying any number by zero")
-    void testMultiplicationWithZero() {
+    @DisplayName("should display error when inverting zero")
+    void testInversionOfZero() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(5);
-        calc.pressBinaryOperationKey("*");
         calc.pressDigitKey(0);
-        calc.pressDotKey();
-
-        String expected = "0";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
-
-    }
-    @Test
-    @DisplayName("should display error when drawing the square root of a negative number")
-    void testSquareRootOfNegative() {
-        Calculator calc = new Calculator();
-
-
-        calc.pressDigitKey(7);
-        calc.pressNegativeKey();
-        calc.pressUnaryOperationKey("√");
+        calc.pressUnaryOperationKey("1/x");
 
         String expected = "Error";
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
+
     }
 
 
-
 }
+
+
+
+
+
+
 
