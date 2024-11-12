@@ -8,16 +8,17 @@ package htw.berlin.prog2.ha1;
  */
 public class Calculator {
 
-    private String screen = "0";
+    private String screen = "0"; // aktueller Bildschirminhalt
 
-    private double latestValue;
+    private double latestValue; //zuletzt eingegebener Wert
 
-    private String latestOperation = "";
+    private String latestOperation = ""; // letzte Operation
 
     /**
      * @return den aktuellen Bildschirminhalt als String
      */
     public String readScreen() {
+
         return screen;
     }
 
@@ -26,14 +27,17 @@ public class Calculator {
      * drücken kann muss der Wert positiv und einstellig sein und zwischen 0 und 9 liegen.
      * Führt in jedem Fall dazu, dass die gerade gedrückte Ziffer auf dem Bildschirm angezeigt
      * oder rechts an die zuvor gedrückte Ziffer angehängt angezeigt wird.
+     *
      * @param digit Die Ziffer, deren Taste gedrückt wurde
      */
     public void pressDigitKey(int digit) {
-        if(digit > 9 || digit < 0) throw new IllegalArgumentException();
+        if (digit > 9 || digit < 0) throw new IllegalArgumentException(); //Prüfen auf ungültige Ziffer
+        // Bildschirm zurücksetzten, wenn "0" oder zuletzt eingegebener Wert dem aktuellen Wert entspricht
+        if (screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
 
-        if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
 
-        screen = screen + digit;
+        screen = screen + digit;// Ziffer an Bildschirm anhängen
+
     }
 
     /**
@@ -45,9 +49,9 @@ public class Calculator {
      * im Ursprungszustand ist.
      */
     public void pressClearKey() {
-        screen = "0";
-        latestOperation = "";
-        latestValue = 0.0;
+        screen = "0"; //Bildschirm auf "0" setzen
+        latestOperation = ""; // letzte Operation zurücksetzen
+        latestValue = 0.0; //zuletzt eingegebenen Wert zurücksetzen
     }
 
     /**
@@ -57,11 +61,13 @@ public class Calculator {
      * Rechner in den passenden Operationsmodus versetzt.
      * Beim zweiten Drücken nach Eingabe einer weiteren Zahl wird direkt des aktuelle Zwischenergebnis
      * auf dem Bildschirm angezeigt. Falls hierbei eine Division durch Null auftritt, wird "Error" angezeigt.
+     *
      * @param operation "+" für Addition, "-" für Substraktion, "x" für Multiplikation, "/" für Division
      */
-    public void pressBinaryOperationKey(String operation)  {
-        latestValue = Double.parseDouble(screen);
-        latestOperation = operation;
+    public void pressBinaryOperationKey(String operation) { // M. empfängt als Wert ein String
+        latestValue = Double.parseDouble(screen); // aktueller Wert auf Bildschirm wird als double konvertiert und in lV gespeichert
+        latestOperation = operation; // ausgewählte Operation wird in der Variable gespeichert
+
     }
 
     /**
@@ -69,22 +75,32 @@ public class Calculator {
      * Quadratwurzel, Prozent, Inversion, welche nur einen Operanden benötigen.
      * Beim Drücken der Taste wird direkt die Operation auf den aktuellen Zahlenwert angewendet und
      * der Bildschirminhalt mit dem Ergebnis aktualisiert.
+     *
      * @param operation "√" für Quadratwurzel, "%" für Prozent, "1/x" für Inversion
      */
     public void pressUnaryOperationKey(String operation) {
-        latestValue = Double.parseDouble(screen);
-        latestOperation = operation;
-        var result = switch(operation) {
-            case "√" -> Math.sqrt(Double.parseDouble(screen));
+        latestValue = Double.parseDouble(screen); // Aktuellen Wert speichern
+        latestOperation = operation; // Setze die Operation
+
+        if (operation.equals("1/x") && latestValue == 0) {
+            screen = "Error";
+            return;
+        }
+
+        var result = switch (operation) { // Berechnung durchführen
+            case "√" -> Math.sqrt(Double.parseDouble(screen)); // Quadratwurzel
             case "%" -> Double.parseDouble(screen) / 100;
-            case "1/x" -> 1 / Double.parseDouble(screen);
-            default -> throw new IllegalArgumentException();
+            case "1/x" -> 1 / Double.parseDouble(screen); // Inversion
+            default -> throw new IllegalArgumentException(); // Ungültige Operation
         };
-        screen = Double.toString(result);
-        if(screen.equals("NaN")) screen = "Error";
-        if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
+        screen = Double.toString(result); // Ergebnis in Zeichenkette umgewandelt und auf dem Bildschirm anzeigen
+        if (screen.equals("NaN")) screen = "Error"; // Fehler anzeigen, wenn ungültige Berechnung
+        if (screen.contains(".") && screen.length() > 11)
+            screen = screen.substring(0, 10); // Bildschirmformatierung, wenn Ergebnis eine Dezimalzahl und screen länger als 11 Zeichen hat
+        // String auf max 10 Zeichen gekürzt
 
     }
+
 
     /**
      * Empfängt den Befehl der gedrückten Dezimaltrennzeichentaste, im Englischen üblicherweise "."
@@ -93,8 +109,9 @@ public class Calculator {
      * Trennzeichen angegeben und daher als Dezimalziffern interpretiert.
      * Beim zweimaligem Drücken, oder wenn bereits ein Trennzeichen angezeigt wird, passiert nichts.
      */
+
     public void pressDotKey() {
-        if(!screen.contains(".")) screen = screen + ".";
+        if (!screen.contains(".")) screen = screen + ".";
     }
 
     /**
@@ -106,7 +123,7 @@ public class Calculator {
      */
     public void pressNegativeKey() {
         screen = screen.startsWith("-") ? screen.substring(1) : "-" + screen;
-    }
+    } // M. prüft ob Minuszeichen vorhanden
 
     /**
      * Empfängt den Befehl der gedrückten "="-Taste.
@@ -118,6 +135,7 @@ public class Calculator {
      * und das Ergebnis direkt angezeigt.
      */
     public void pressEqualsKey() {
+
         var result = switch(latestOperation) {
             case "+" -> latestValue + Double.parseDouble(screen);
             case "-" -> latestValue - Double.parseDouble(screen);
@@ -131,3 +149,7 @@ public class Calculator {
         if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
     }
 }
+
+
+
+
