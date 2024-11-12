@@ -1,5 +1,6 @@
 package htw.berlin.prog2.ha1;
 
+import com.google.common.cache.CacheLoader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -125,6 +126,28 @@ class CalculatorTest {
 
     }
 
+    @Test
+    @DisplayName("should not allow to display ")
+    void testTooManyDigits() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(2);
+        calc.pressDigitKey(3);
+        calc.pressDigitKey(4);
+        calc.pressDigitKey(5);
+        calc.pressDigitKey(6);
+        calc.pressDigitKey(7);
+        calc.pressDigitKey(8);
+        calc.pressDigitKey(9);
+        calc.pressDigitKey(0);
+        calc.pressDigitKey(1);
+
+        String expected = "1234567890";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
 
 }
 
