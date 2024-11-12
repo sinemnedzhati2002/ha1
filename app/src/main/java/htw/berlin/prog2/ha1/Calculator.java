@@ -38,6 +38,9 @@ public class Calculator {
 
         screen = screen + digit;// Ziffer an Bildschirm anhängen
 
+        if(screen.length() > 10) {
+            screen = screen.substring(0,10);
+        }
     }
 
     /**
